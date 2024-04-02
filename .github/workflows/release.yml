@@ -33,6 +33,6 @@ jobs:
           files: |
             file1
           tag_name: foo-${{ steps.date.outputs.date }}
-          target_commitish: release
+          target_commitish: main
           token: ${{ secrets.GITHUB_TOKEN }}
         
