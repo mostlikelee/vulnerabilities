@@ -44,7 +44,7 @@ jobs:
             exit 1
           fi
 
-          echo "LATEST_TAG=$latestTag >> $GITHUB_ENV
+          echo "LATEST_TAG=$latestTag" > $GITHUB_ENV
 
       - name: Download assets from latest release
         run: |
