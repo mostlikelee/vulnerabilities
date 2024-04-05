@@ -16,6 +16,7 @@ permissions:
 
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  VULNCHECK_API_KEY: ${{ secrets.VULNCHECK_API_KEY }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
