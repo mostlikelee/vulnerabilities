@@ -41,12 +41,11 @@ jobs:
           go-version: '^1.21.4'
 
       - name: Generate NVD Feeds
-        with:
-          command: |
-            cd fleet
-            go mod download
-            go run cmd/cve/generate.go --db_dir ./vulndb --debug
-            rm vulncheck.zip
+        run: |
+          cd fleet
+          go mod download
+          go run cmd/cve/generate.go --db_dir ./vulndb --debug
+          rm vulncheck.zip
             
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # - uses: actions/checkout@v3
