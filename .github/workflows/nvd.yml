@@ -5,11 +5,6 @@ name: Generate NVD
 # Controls when the workflow will run
 on:
   workflow_dispatch:
-    inputs:
-      productName:
-        description: 'Product Name'
-        required: true
-        default: 'foo'
 
 permissions:
   contents: write
@@ -30,7 +25,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          ref: nvd
+          ref: main
           
       - name: Checkout Fleet
         uses: actions/checkout@v4
@@ -67,7 +62,7 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git pull
           git commit --allow-empty -m 'Release ${{ steps.date.outputs.date }}'
-          git push origin release
+          git push origin main
           
       - name: Release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
@@ -75,13 +70,13 @@ jobs:
           files: |
             fleet/vulndb/*
           tag_name: ${{ steps.date.outputs.date }}
-          target_commitish: release
+          target_commitish: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete Old Releases
         uses: dev-drprasad/delete-older-releases@v0.3.2
         with:
-          keep_latest: 60
+          keep_latest: 144
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
