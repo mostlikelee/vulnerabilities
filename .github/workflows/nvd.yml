@@ -27,6 +27,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          ref: nvd
+          
       - name: Checkout Fleet
         uses: actions/checkout@v4
         with:
