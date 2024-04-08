@@ -69,7 +69,7 @@ jobs:
         with:
           files: |
             fleet/vulndb/*
-          tag_name: ${{ steps.date.outputs.date }}
+          tag_name: cve-${{ steps.date.outputs.date }}
           target_commitish: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
