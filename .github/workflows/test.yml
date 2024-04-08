@@ -44,15 +44,15 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git pull
           git commit --allow-empty -m 'Release ${{ steps.date.outputs.date }}'
-          git push origin release
+          git push origin main
           
       - name: Release
         uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
         with:
           files: |
             fleet/vulndb/*
-          tag_name: ${{ steps.date.outputs.date }}
-          target_commitish: release
+          tag_name: nvd-${{ steps.date.outputs.date }}
+          target_commitish: main
           token: ${{ secrets.GITHUB_TOKEN }}
 
      
