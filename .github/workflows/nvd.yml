@@ -1,0 +1,87 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Generate NVD
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+    inputs:
+      productName:
+        description: 'Product Name'
+        required: true
+        default: 'foo'
+
+permissions:
+  contents: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  VULNCHECK_API_KEY: ${{ secrets.VULNCHECK_API_KEY }}
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          ref: nvd
+          
+      - name: Checkout Fleet
+        uses: actions/checkout@v4
+        with:
+          repository: fleetdm/fleet
+          fetch-depth: 1
+          ref: 17966-generate-vulncheck
+          path: fleet
+
+      - name: Setup Go
+        uses: actions/setup-go@v4.1.0
+        with:
+          cache: false
+          go-version: '^1.21.4'
+
+      - name: Generate NVD Feeds
+        run: |
+          cd fleet
+          go mod download
+          export VULNCHECK_API_KEY=${{ secrets.VULNCHECK_API_KEY }}
+          go run cmd/cve/generate.go --db_dir ./vulndb --debug
+          rm ./vulndb/vulncheck.zip
+            
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # - uses: actions/checkout@v3
+      - name: Current date
+        id: date
+        run: |
+          echo "date=$(date +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
+
+      - name: Tag
+        run: |
+          git config --global user.email ""
+          git config --global user.name "GitHub Actions Bot"
+          git pull
+          git commit --allow-empty -m 'Release ${{ steps.date.outputs.date }}'
+          git push origin release
+          
+      - name: Release
+        uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
+        with:
+          files: |
+            fleet/vulndb/*
+          tag_name: ${{ steps.date.outputs.date }}
+          target_commitish: release
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Delete Old Releases
+        uses: dev-drprasad/delete-older-releases@v0.3.2
+        with:
+          keep_latest: 60
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        

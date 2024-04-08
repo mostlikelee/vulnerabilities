@@ -1,10 +1,21 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Release Vulns
+name: Get Latest Release
 
 # Controls when the workflow will run
 on:
   workflow_dispatch:
+    inputs:
+      productName:
+        description: 'Product Name'
+        required: true
+        default: 'foo'
+
+permissions:
+  contents: write
+
+env:
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -17,10 +28,31 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       # - uses: actions/checkout@v3
+      - name: Current date
+        id: date
+        run: |
+          echo "date=$(date +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
+
+      - name: get latest release
+        id: get-latest-release
+        run: |
+          productName=${{ github.event.inputs.productName }}
+          latestTag=$(gh release list --repo ${{ github.repository }} | grep "^${productName}-" | head -n 1 | cut -f 1)
+
+          if [ -z "$latestTag" ]; then
+            echo "No releases found for product: $productName" >&2
+            exit 1
+          fi
+
+          echo "LATEST_TAG=$latestTag" > $GITHUB_ENV
+
+      - name: Download assets from latest release
+        run: |
+          wget https://github.com/${{ github.repository }}/releases/download${{ steps.get-latest-release.outputs.result }}/*
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: echo "hello" > file1
+        run: echo "hello" >> file1
 
       # Runs a set of commands using the runners shell
       - name: Release
@@ -29,6 +61,6 @@ jobs:
           files: |
             file1
           tag_name: foo-${{ steps.date.outputs.date }}
-          target_commitish: release
+          target_commitish: main
           token: ${{ secrets.GITHUB_TOKEN }}
         
