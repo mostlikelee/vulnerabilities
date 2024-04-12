@@ -28,15 +28,10 @@ jobs:
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v2
         with:
-          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.GPG_PASSPHRASE }}
-
-      - name: Setup Git config
-        run: |
-          git config --global user.signingkey FD34BC1419271CCC
-          git config --global commit.gpgSign true
-          git config --global user.email "timlee@fleetdm.com"
-          git config --global user.name "Tim Lee"
+          git_user_signingkey: true
+          git_commit_gpgsign: true
 
       - name: Checkout Repo
         uses: actions/checkout@v4
