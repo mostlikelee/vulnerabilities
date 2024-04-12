@@ -38,7 +38,7 @@ jobs:
           mkdir ./vulndb
           touch ./vulndb/"$(date)"
           sleep 1
-          toucb ./vulndb/"$(date)"
+          touch ./vulndb/"$(date)"
             
       - name: Current date
         id: date
