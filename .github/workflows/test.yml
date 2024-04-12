@@ -45,13 +45,14 @@ jobs:
         run: |
           echo "date=$(date +'%Y%m%d%H%M')" >> $GITHUB_OUTPUT
 
-      # - name: Tag
-      #   run: |
-      #     git config --global user.email ""
-      #     git config --global user.name "GitHub Actions Bot"
-      #     git pull
-      #     git commit --allow-empty -m 'Release ${{ steps.date.outputs.date }}'
-      #     git push origin main
+      - name: Tag
+        run: |
+          git config --global user.email ""
+          git config --global user.name "GitHub Actions Bot"
+          git pull
+          # git commit --allow-empty -m 'Release ${{ steps.date.outputs.date }}'
+          git tag cve-${{ steps.date.outputs.date }}
+          git push origin main
           
       - name: Release
         run: |
