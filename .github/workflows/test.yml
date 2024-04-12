@@ -3,7 +3,7 @@ name: Test Release
 on:
   push:
     branches:
-      - release
+      - main
   # schedule:
   #   - cron: '*/30 * * * *'
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          ref: release
+          ref: main
 
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v6
