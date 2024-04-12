@@ -51,7 +51,7 @@ jobs:
           # git config --global user.name "GitHub Actions Bot"
           # git pull
           # git commit --allow-empty -m 'Release ${{ steps.date.outputs.date }}'
-          git tag cve-${{ steps.date.outputs.date }}
+          git tag -a cve-${{ steps.date.outputs.date }} -m "release ${{ steps.date.outputs.date }}"
           git push origin cve-${{ steps.date.outputs.date }}
           
       - name: Release
