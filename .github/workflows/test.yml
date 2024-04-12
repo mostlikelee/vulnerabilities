@@ -3,7 +3,7 @@ name: Test Release
 on:
   push:
     branches:
-      - main
+      - release
   # schedule:
   #   - cron: '*/30 * * * *'
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: release
 
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v6
@@ -52,7 +52,7 @@ jobs:
           git pull
           # git commit --allow-empty -m 'Release ${{ steps.date.outputs.date }}'
           git tag cve-${{ steps.date.outputs.date }} $(git rev-parse HEAD)
-          git push origin main
+          git push origin release
           
       - name: Release
         run: |
