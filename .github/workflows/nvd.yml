@@ -1,4 +1,4 @@
-name: Generate NVD
+name: Generate CVE
 
 on:
   push:
@@ -15,11 +15,29 @@ env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   VULNCHECK_API_KEY: ${{ secrets.VULNCHECK_API_KEY }}
 
-jobs:   
+jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
+        with:
+          egress-policy: audit
+
+      - name: Import GPG Key
+        uses: crazy-max/ghaction-import-gpg@v2
+        with:
+          gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.GPG_PASSPHRASE }}
+
+      - name: Setup Git config
+        run: |
+          git config --global user.signingkey FD34BC1419271CCC
+          git config --global commit.gpgSign true
+          git config --global user.email "timlee@fleetdm.com"
+          git config --global user.name "Tim Lee"
+
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
@@ -72,7 +90,7 @@ jobs:
       - name: Delete Old Releases
         uses: dev-drprasad/delete-older-releases@v0.3.2
         with:
+          delete_tag_pattern: ^cve-.*
           keep_latest: 144
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
