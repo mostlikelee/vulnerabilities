@@ -1,9 +1,9 @@
 name: Test Release
 
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   # schedule:
   #   - cron: '*/30 * * * *'
   workflow_dispatch:
@@ -36,9 +36,9 @@ jobs:
       - name: Generate NVD Feeds
         run: |
           mkdir ./vulndb
-          touch ./vulndb/"$(date)"
+          echo "foo" > ./vulndb/foo
           sleep 1
-          touch ./vulndb/"$(date)"
+          echo "bar" > ./vulndb/bar
             
       - name: Current date
         id: date
