@@ -19,6 +19,8 @@ permissions:
 env:
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   VULNCHECK_API_KEY: ${{ secrets.VULNCHECK_API_KEY }}
+  VULNERABILITIES_CLEAN: ${{ github.event.inputs.clean || 'false' }}
+  TEST_VULN_GITHUB_OWNER: mostlikelee
 
 jobs:
   build:
@@ -62,9 +64,6 @@ jobs:
         run: |
           cd fleet
           go mod download
-          export VULNCHECK_API_KEY=${{ secrets.VULNCHECK_API_KEY }}
-          export VULNERABILITIES_CLEAN=${{ github.event.inputs.clean }}
-          export TEST_VULN_GITHUB_OWNER=mostlikelee
           go run cmd/cve/generate.go --db_dir ./cvefeed --debug
             
       - name: Current date
