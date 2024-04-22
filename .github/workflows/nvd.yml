@@ -10,7 +10,7 @@ on:
     inputs:
       clean:
         description: 'Download fresh feeds from NVD'
-        required: false
+        required: true
         default: 'false'
 
 permissions:
