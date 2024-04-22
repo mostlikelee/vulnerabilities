@@ -49,7 +49,7 @@ jobs:
         with:
           repository: fleetdm/fleet
           fetch-depth: 1
-          ref: main
+          ref: add-vuln-clean-option
           path: fleet
 
       - name: Setup Go
