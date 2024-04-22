@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
     inputs:
       clean:
-        description: 'Download fresh feeds from NVD'
+        description: 'Download fresh feeds from NVD.  Any value other than "false" will trigger a clean download.'
         required: true
         default: 'false'
 
@@ -51,7 +51,7 @@ jobs:
         with:
           repository: fleetdm/fleet
           fetch-depth: 1
-          ref: add-vuln-clean-option
+          ref: main
           path: fleet
 
       - name: Setup Go
@@ -92,3 +92,24 @@ jobs:
           keep_latest: 144
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # - name: Slack Notification
+      #   if: failure()
+      #   uses: slackapi/slack-github-action@v1.18.0
+      #   with:
+      #     payload: |
+      #       {
+      #         "text": "${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head.html_url }}",
+      #         "blocks": [
+      #           {
+      #             "type": "section",
+      #             "text": {
+      #               "type": "mrkdwn",
+      #               "text": "Security artifacts generation result: ${{ job.status }}\nhttps://github.com/fleetdm/nvd/actions/runs/${{  github.run_id }}\n${{ github.event.pull_request.html_url || github.event.head.html_url }}"
+      #             }
+      #           }
+      #         ]
+      #       }
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_G_HELP_P1_WEBHOOK_URL }}
+      #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
