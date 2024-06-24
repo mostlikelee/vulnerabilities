@@ -12,6 +12,10 @@ on:
         description: 'Download fresh feeds from NVD.  Any value other than "false" will trigger a clean download.'
         required: true
         default: 'false'
+      timeout:
+        description: 'Job Timeout in Minutes'
+        required: false
+        default: '25'
 
 permissions:
   contents: write
@@ -25,7 +29,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: ${{ fromJSON(github.event.inputs.timeout) }}
 
     steps:
       - name: Harden Runner
