@@ -29,7 +29,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ fromJSON(github.event.inputs.timeout) }}
+    timeout-minutes: ${{ github.event.inputs.timeout }}
 
     steps:
       - name: Harden Runner
