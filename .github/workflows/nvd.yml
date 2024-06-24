@@ -15,7 +15,7 @@ on:
       timeout:
         description: 'Job Timeout in Minutes'
         required: false
-        default: 25
+        default: '25'
 
 permissions:
   contents: write
