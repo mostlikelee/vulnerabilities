@@ -51,7 +51,7 @@ jobs:
         with:
           repository: fleetdm/fleet
           fetch-depth: 1
-          ref: 24286-vulncheck
+          ref: main
           path: fleet
 
       - name: Setup Go
