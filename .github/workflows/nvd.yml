@@ -36,7 +36,7 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: vulncheck-perf-improvements
 
       - name: Import GPG Key
         uses: crazy-max/ghaction-import-gpg@v6
