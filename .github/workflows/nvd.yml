@@ -51,8 +51,8 @@ jobs:
         with:
           repository: fleetdm/fleet
           fetch-depth: 1
-          ref: main
-          path: 28261-cvss-fallback
+          ref: 28261-cvss-fallback
+          path: fleet
 
       - name: Setup Go
         uses: actions/setup-go@v4.1.0
