@@ -51,7 +51,7 @@ jobs:
         with:
           repository: fleetdm/fleet
           fetch-depth: 1
-          ref: main
+          ref: nvd-time-fix
           path: fleet
 
       - name: Setup Go
