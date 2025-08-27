@@ -51,7 +51,7 @@ jobs:
         with:
           repository: fleetdm/fleet
           fetch-depth: 1
-          ref: 32323-docker-cve-false-negative
+          ref: main
           path: fleet
 
       - name: Setup Go
