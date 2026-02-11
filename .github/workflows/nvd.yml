@@ -50,7 +50,7 @@ jobs:
         with:
           repository: fleetdm/fleet
           fetch-depth: 1
-          ref: 33990-vendor-goval
+          ref: main
           path: fleet
 
       - name: Setup Go
